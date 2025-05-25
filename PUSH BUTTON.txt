@@ -1,0 +1,28 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12); // Adjust based on wiring
+const int buttonPin = 2;
+int count = 0;
+bool buttonState = false;
+bool lastButtonState = false;
+
+void setup() {
+    pinMode(buttonPin, INPUT_PULLUP);
+    lcd.begin(16, 2);
+    lcd.print("Count: ");
+    Serial.begin(9600);
+}
+
+void loop() {
+    buttonState = digitalRead(buttonPin);
+    
+    if (buttonState == LOW && lastButtonState == HIGH) {
+        count++;
+        lcd.setCursor(7, 0);
+        lcd.print(count);
+        Serial.println(count);
+        delay(50); // Simple debounce
+    }
+
+    lastButtonState = buttonState;
+}
